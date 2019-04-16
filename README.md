@@ -52,16 +52,18 @@ const passportLocalMongoose = require("passport-local-mongoose")
 * Further configurations for express-session (cookie based session middleware) and passport to serialize and deserialize user
 
 ```python
+// requiring express-session and passing an object used during authenication
 app.use(require("express-session")({
     secret: "be as silly as you can be while initializing this secret string",
     resave: false,
     saveUninitialized: false
 }));
-
+// telling express to use passport.initialize() and passport.session()
 app.use(passport.initialize());
 app.use(passport.session());
-
+// telling passport to use local strategy for authentication
 passport.use(new LocalStrategy(User.authenticate()));
+// serialize and deserialize user on authenication
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 ```
