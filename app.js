@@ -34,6 +34,26 @@ app.get("/secret/:username",isLoggedIn, (req, res) => {
    res.render("secret", {username: req.params.username}); 
 });
 
+// Auth Routes
+
+//show sign up form
+app.get("/signup", (req, res) => {
+   res.render("signup"); 
+});
+//handling user sign up
+app.post("/signup", (req, res) => {
+    User.register(new User({username: req.body.username, email: req.body.email}), req.body.password, (err, user) => {
+        if(err){
+            console.log(err);
+            return res.render('signup');
+        }
+        passport.authenticate("local")(req, res, () => {
+           res.redirect("/secret/" + req.body.username);
+        });
+    });
+});
+
+
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next();
