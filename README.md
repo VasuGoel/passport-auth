@@ -17,41 +17,33 @@ Start by either downloading the zip file or clone with HTTPS.
 
 ## Running
 
-#### Disclaimer - Change the database configurations in your server file explained below according to your preferences, but if you're using MongoDB then you can skip to step 2 to change what databse your app connects to.
+#### Disclaimer - Change the database configurations in your server file explained below according to your preferences, but you may as well leave them and move on, if you're using MongoDB already.
 
 ### 1. Install all dependencies
-
 From your terminal, install all dependencies for the application.
-
-```python
+```
 npm install
 ```
+
 ### 2. Connect your database
-
 * Require mongoose package (elegant mongodb object modeling for node.js)
-
-```python
+```
 const mongoose = require("mongoose")
 ```
 * Connect to a local database
-
-```python
+```
 mongoose.connect("mongodb://localhost/auth", {useNewUrlParser: true});
 ```
 
 ### 3. Passport configurations
-
 * Require the following passport packages
-
-```python
+```
 const passport = require("passport")
 csont LocalStrategy = require("passport-local")
 const passportLocalMongoose = require("passport-local-mongoose")
 ```
-
 * Further configurations for express-session (cookie based session middleware) and passport to serialize and deserialize user
-
-```python
+```
 // requiring express-session and passing an object used during authenication
 app.use(require("express-session")({
     secret: "be as silly as you can be while initializing this secret string",
@@ -66,6 +58,19 @@ passport.use(new LocalStrategy(User.authenticate()));
 // serialize and deserialize user on authenication
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+```
+
+### 3. Middleware configurations
+
+Middleware function to check is user is still logged in or not
+
+```
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 ```
 
 
