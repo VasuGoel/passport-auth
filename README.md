@@ -60,8 +60,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 ```
 
-### 3. Middleware configurations
-
+### 4. Middleware configurations
 Middleware function to check is user is still logged in or not
 
 ```
@@ -73,6 +72,14 @@ function isLoggedIn(req, res, next){
 }
 ```
 
+### 5. Logout route
+```
+app.get('/logout', function (req, res){
+  req.session.destroy(function (err) {
+    res.redirect('/'); //Inside a callback… bulletproof!
+  });
+});
+```
 
 ## Built With
 
